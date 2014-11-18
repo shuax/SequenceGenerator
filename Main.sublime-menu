@@ -1,0 +1,11 @@
+[
+    {
+        "id": "edit",
+        "children":
+        [{
+            "caption": "Generate Sequence",
+            "id": "SequenceGenerator",
+            "command": "sequence_generator"
+        }]
+    }
+]

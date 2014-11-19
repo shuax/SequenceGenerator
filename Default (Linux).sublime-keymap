@@ -1,0 +1,4 @@
+[{
+  "keys": ["ctrl+shift+n"],
+  "command": "sequence_generator"
+}]

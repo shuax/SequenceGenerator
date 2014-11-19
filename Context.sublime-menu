@@ -1,0 +1,5 @@
+[{
+    "id": "SequenceGenerator",
+    "caption": "Generate Sequence",
+    "command": "sequence_generator"
+}]

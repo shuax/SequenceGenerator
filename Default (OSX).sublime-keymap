@@ -1,0 +1,4 @@
+[{
+  "keys": ["super+shift+n"],
+  "command": "sequence_generator"
+}]

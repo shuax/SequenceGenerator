@@ -40,16 +40,41 @@ class SequenceGeneratorCommand(sublime_plugin.TextCommand):
         return parameter
 
 class GenerateSequenceCommand(sublime_plugin.TextCommand):
+
+    def prepare_padding(self, edit, start):
+        def append(string):
+            string = str(string)
+            self.view.insert(edit, start[0], string)
+            start[0] += len(string)
+            return sublime.Region(start[0]-len(string), start[0])
+        return append
+
+    def generate(self, edit, region, sequence, new_sel):
+        contents = self.view.substr(region)
+        self.view.erase(edit, region)
+        padding_append = self.prepare_padding(edit, [region.begin()])
+        for i, x in enumerate(sequence):
+            splits = contents.split('#')
+            for j, s in enumerate(splits):
+                padding_append(s)
+                if j!=len(splits)-1:
+                    new_sel.append(padding_append(x))
+            if i!=len(sequence)-1:
+                padding_append('\n')
+
     def run(self, edit, parameter):
+        sequence = list(range(parameter['start'], parameter['end'], parameter['step']))
+        new_sel = []
+
         for region in self.view.sel():
             if region.empty():
                 line = self.view.line(region)
-                line_contents = [ self.view.substr(line).replace('$', str(x)) for x in range(parameter['start'], parameter['end'], parameter['step'])]
-
-                self.view.erase(edit, line)
-                self.view.insert(edit, line.begin(), "\n".join(line_contents))
+                self.generate(edit, line, sequence, new_sel)
             else:
-                region_contents = [ self.view.substr(region).replace('$', str(x)) for x in range(parameter['start'], parameter['end'], parameter['step'])]
+                self.generate(edit, region, sequence, new_sel)
 
-                self.view.erase(edit, region)
-                self.view.insert(edit, region.begin(), "\n".join(region_contents))
+        if len(new_sel) > 0:
+            self.view.sel().clear()
+            for r in new_sel:
+                self.view.sel().add(r)
+

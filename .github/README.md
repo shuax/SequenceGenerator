@@ -7,3 +7,5 @@
 下面是演示过程：
 
 ![image](https://raw.githubusercontent.com/shuax/SequenceGenerator/master/demo.gif)
+
+新版Sublime Text自带了一个Arithmetic命令，推荐使用，可以直接使用表达式，比这个插件的功能更强大。
